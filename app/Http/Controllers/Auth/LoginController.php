@@ -37,16 +37,16 @@ class LoginController extends Controller
      */
     public function __construct()
     {
-        // $this->middleware('guest')->except('logout');
+       
     }
 
+    public function Index()
+    {
+        return view('login');
+    }
+    
     public function Login(Request $request)
     {
-        return Helper::Guzzle(
-            "https://devel.bebasbayar.com/web/test_programmer.php", 
-            [], 
-            [ 'Accept' => 'application/json' ],
-            ["user" => 'admin', 'password' => 'admin123'], "POST");
 
         // return Helper::Guzzle("https://devel.bebasbayar.com/web/test_programmer.php");
     }

@@ -11,11 +11,10 @@
 |
 */
 
-Route::get('/login', function () {
-    return view('login');
-});
+// Route::get('/login', 'auth\LoginController@index');
 
-Route::get('/', function () {
-    return view('dashboard');
-});
+// Route::get('/', 'dashboard\IndexController@index'); 
+
+Route::resource('/login', "LoginController");
+Route::resource('/dashboard', "DashboardController");
 

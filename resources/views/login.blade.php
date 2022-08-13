@@ -81,7 +81,25 @@
               </div>
               <!-- /Logo -->
 
-              <form id="formAuthentication" class="mb-3" action="index.html" method="POST">
+              @if ($errors->any() || $message = Session::get('Erorr'))
+              <div class="alert alert-danger">
+                  <strong>Error!</strong> 
+                  <ul>
+                    @if($errors->any())
+                      
+                      @foreach ($errors->all() as $error)
+                          <li>{{$error}}</li>
+                      @endforeach
+
+                    @elseif($message)
+                      <li>{{$message}}</li>
+                    @endif
+                  </ul>
+              </div>
+            @endif
+
+              <form id="formAuthentication" class="mb-3" action="{{ route('login.store')}}" method="POST">
+                @csrf
                 <div class="mb-3">
                   <label for="email" class="form-label">Email or Username</label>
                   <input
@@ -89,7 +107,7 @@
                     class="form-control"
                     id="email"
                     name="username"
-                    placeholder="Enter your email or username"
+                    placeholder="Enter your username"
                     autofocus
                     value=""
                   />
