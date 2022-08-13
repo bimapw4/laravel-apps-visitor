@@ -13,7 +13,9 @@
 
 // Route::get('/login', 'auth\LoginController@index');
 
-// Route::get('/', 'dashboard\IndexController@index'); 
+Route::get('/', function () {
+    return redirect(url('login'));
+}); 
 
 Route::resource('/login', "LoginController");
 Route::resource('/dashboard', "DashboardController");

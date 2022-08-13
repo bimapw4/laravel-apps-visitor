@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Helper\Helper;
-use App\users;
+use App\User;
 use Illuminate\Http\Request;
 
 class LoginController extends Controller
@@ -41,15 +41,34 @@ class LoginController extends Controller
                 "username" => "required",
                 "password" => "required"
             ]);
-    
-            $post = Helper::Guzzle(
-                "https://devel.bebasbayar.com/web/test_programmer.php", 
-                [], 
-                [ 'Accept' => 'application/json' ],
-                ["user" => $request->username, 'password' => $request->password], 
-                "POST");
+            
+            $user = User::where("username", $request->username)->where("password", $request->password)->first();
+            
+            //check if user not available in local database then send request to api server
+            if (!$user) {
+                $post = Helper::Guzzle(
+                    "https://devel.bebasbayar.com/web/test_programmer.php", 
+                    [], 
+                    [ 'Accept' => 'application/json' ],
+                    ["user" => $request->username, 'password' => $request->password], 
+                    "POST");
+
+                    //save new record user from api server when status true
+                    if ($post['rc'] != '01') {
+                        User::create([
+                            "username" => $request->username,
+                            "password" => $request->password
+                        ]);
+                    }
+
+            } else {
+                $post['rc'] = '00';
+            }
+            
 
             if ($post['rc'] == '01') {
+
+                //redirect to login and give massage from api server
                 return redirect()->route('login.index')->with("Erorr", $post['rd']);
             } else {
                 return redirect()->route('dashboard.index');

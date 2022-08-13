@@ -2,11 +2,9 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\Helper\Helper;
 use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
-use Illuminate\Http\Request;
 
 class LoginController extends Controller
 {
@@ -37,17 +35,6 @@ class LoginController extends Controller
      */
     public function __construct()
     {
-       
-    }
-
-    public function Index()
-    {
-        return view('login');
-    }
-    
-    public function Login(Request $request)
-    {
-
-        // return Helper::Guzzle("https://devel.bebasbayar.com/web/test_programmer.php");
+        $this->middleware('guest')->except('logout');
     }
 }

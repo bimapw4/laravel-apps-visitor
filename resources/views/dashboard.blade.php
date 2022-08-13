@@ -38,7 +38,7 @@
 
     <!-- Helpers -->
     <script src="../assets/vendor/js/helpers.js"></script>
-    
+
     <script src="../assets/js/config.js"></script>
 </head>
 
@@ -175,10 +175,9 @@
                                                         <i class="bx bx-dots-vertical-rounded"></i>
                                                     </button>
                                                     <div class="dropdown-menu">
-                                                        <button type="button" class="btn btn-primary"
-                                                            data-bs-toggle="modal" data-bs-target="#Modal-{{$key}}">
-                                                            Launch modal
-                                                        </button>
+                                                      <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#Modal-{{$key}}"
+                                                        ><i class="bx bx-edit-alt me-1"></i> Detail</a
+                                                      >
                                                     </div>
                                             </td>
                                         </tr>
