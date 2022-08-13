@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Helper\Helper;
 use Illuminate\Http\Request;
 
 class DashboardController extends Controller
@@ -14,7 +15,8 @@ class DashboardController extends Controller
     public function index()
     {
         //
-        return view('dashboard');
+        $data = Helper::Guzzle("https://devel.bebasbayar.com/web/test_programmer.php");
+        return view('dashboard', ["datas" => $data]);
     }
 
     /**
