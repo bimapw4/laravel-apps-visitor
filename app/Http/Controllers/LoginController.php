@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Helper\Helper;
 use App\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class LoginController extends Controller
 {
@@ -37,7 +38,7 @@ class LoginController extends Controller
      */
     public function store(Request $request)
     {
-            $request->validate([
+            $credentials = $request->validate([
                 "username" => "required",
                 "password" => "required"
             ]);
@@ -57,7 +58,7 @@ class LoginController extends Controller
                     if ($post['rc'] != '01') {
                         User::create([
                             "username" => $request->username,
-                            "password" => $request->password
+                            "password" => bcrypt($request->password)
                         ]);
                     }
 
@@ -71,7 +72,10 @@ class LoginController extends Controller
                 //redirect to login and give massage from api server
                 return redirect()->route('login.index')->with("Erorr", $post['rd']);
             } else {
-                return redirect()->route('dashboard.index');
+                if (Auth::attempt($credentials)) {
+                    $request->session()->regenerate();
+                    return redirect()->intended('dashboard');
+                }
             }
             
     }
@@ -119,5 +123,11 @@ class LoginController extends Controller
     public function destroy(users $users)
     {
         //
+    }
+
+    public function logout()
+    {
+        Auth::logout();
+        return redirect()->intended('login');
     }
 }

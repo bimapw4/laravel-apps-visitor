@@ -17,6 +17,8 @@ Route::get('/', function () {
     return redirect(url('login'));
 }); 
 
-Route::resource('/login', "LoginController");
-Route::resource('/dashboard', "DashboardController");
+Route::get('/login', "LoginController@index")->name('login')->middleware('guest');
+Route::get('/logout', "LoginController@logout")->name('login.logout');
+Route::resource('/login', "LoginController")->name('*','login')->middleware('guest');
+Route::resource('/dashboard', "DashboardController")->name('*','dashboard')->middleware('auth');
 
