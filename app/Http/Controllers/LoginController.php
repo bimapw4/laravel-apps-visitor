@@ -6,6 +6,7 @@ use App\Helper\Helper;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 
 class LoginController extends Controller
 {
@@ -43,10 +44,12 @@ class LoginController extends Controller
                 "password" => "required"
             ]);
             
-            $user = User::where("username", $request->username)->where("password", $request->password)->first();
+            $user = User::where("username", $request->username)->first();
+
+            $passwordIsMatch = app('hash')->check($request->password??'', $user->password??'');
             
             //check if user not available in local database then send request to api server
-            if (!$user) {
+            if (!$passwordIsMatch) {
                 $post = Helper::Guzzle(
                     "https://devel.bebasbayar.com/web/test_programmer.php", 
                     [], 
@@ -58,7 +61,7 @@ class LoginController extends Controller
                     if ($post['rc'] != '01') {
                         User::create([
                             "username" => $request->username,
-                            "password" => bcrypt($request->password)
+                            "password" => Hash::make($request->password)
                         ]);
                     }
 
